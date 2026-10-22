@@ -9,4 +9,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
+export const NestedHeading: Story = {
+  args: { headingLevel: 5 },
+  render: (args) => <section><h4>여행 일정</h4><Accordion {...args} /></section>,
+};
 export const Empty: Story = { args: { items: [] } };

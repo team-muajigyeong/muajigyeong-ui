@@ -70,6 +70,7 @@ light-dark(), color-mix(), :has()를 지원하는 브라우저를 대상으로 �
 - CheckChip, ChoiceSelect, ControlledInput은 부모가 상태를 갱신해야 합니다.
 - ChoiceSelect에는 구분 가능한 ariaLabel과 고유한 option value를 제공합니다.
 - Accordion item id는 목록 안에서 고유해야 합니다.
+- Accordion 제목은 기본적으로 h3입니다. 상위 제목에 맞춰 `<Accordion items={items} headingLevel={5} />`처럼 1~6단계를 지정할 수 있습니다. 지정한 인스턴스의 HTML 제목 단계만 변경되며 기존 스타일과 다른 사용처의 기본 h3는 유지됩니다.
 - 입력 오류는 invalid와 describedBy를 통해 설명 요소에 연결합니다.
 - 기존 동작과 스타일을 옮긴 단계이며 접근성 인증을 의미하지 않습니다.
 

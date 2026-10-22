@@ -17,13 +17,16 @@ export type AccordionItem = {
 export type AccordionProps = {
   /** Panels with unique IDs. Only one panel opens at a time. */
   items: readonly AccordionItem[];
+  /** Semantic heading level for this instance. Defaults to 3; styling is unchanged. */
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 /**
  * Shared controlled UI; application state and domain data remain with the consumer.
  * @param props Display and interaction options.
  */
-export default function Accordion({ items }: AccordionProps) {
+export default function Accordion({ items, headingLevel = 3 }: AccordionProps) {
+  const Heading = `h${headingLevel}` as `h${1 | 2 | 3 | 4 | 5 | 6}`;
   const instanceId = useId();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -40,7 +43,7 @@ export default function Accordion({ items }: AccordionProps) {
 
         return (
           <section className={styles.item} key={item.id}>
-            <h3 className={styles.heading}>
+            <Heading className={styles.heading}>
               <button
                 id={buttonId}
                 type="button"
@@ -52,7 +55,7 @@ export default function Accordion({ items }: AccordionProps) {
                 <span>{item.title}</span>
                 <FaChevronDown aria-hidden="true" />
               </button>
-            </h3>
+            </Heading>
             <div
               id={panelId}
               className={styles.panel}

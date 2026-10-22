@@ -75,11 +75,32 @@ try {
   await page.getByRole("checkbox").check();
   assert.equal(await page.getByRole("checkbox").isChecked(), true);
   await story("ui-accordion--default");
+  await page.getByRole("heading", { name: "사용 방법", level: 3 }).waitFor();
   const accordion = page.getByRole("button", { name: "사용 방법" });
+  const defaultHeadingStyle = await accordion.evaluate(el => {
+    const style = getComputedStyle(el.parentElement);
+    return [style.fontSize, style.marginTop, style.marginBottom];
+  });
   await accordion.click();
   assert.equal(await accordion.getAttribute("aria-expanded"), "true");
   await accordion.press("Space");
   assert.equal(await accordion.getAttribute("aria-expanded"), "false");
+  await story("ui-accordion--nested-heading");
+  await page.getByRole("heading", { name: "여행 일정", level: 4 }).waitFor();
+  await page.getByRole("heading", { name: "사용 방법", level: 5 }).waitFor();
+  assert.equal(await page.getByRole("heading", { level: 3 }).count(), 0);
+  const nestedAccordion = page.getByRole("button", { name: "사용 방법" });
+  assert.deepEqual(await nestedAccordion.evaluate(el => {
+    const style = getComputedStyle(el.parentElement);
+    return [style.fontSize, style.marginTop, style.marginBottom];
+  }), defaultHeadingStyle, "heading level must not change visual styling");
+  await nestedAccordion.press("Enter");
+  assert.equal(await nestedAccordion.getAttribute("aria-expanded"), "true");
+  const panelId = await nestedAccordion.getAttribute("aria-controls");
+  assert.equal(await page.locator(`[id="${panelId}"]`).isVisible(), true);
+  await nestedAccordion.press("Space");
+  assert.equal(await nestedAccordion.getAttribute("aria-expanded"), "false");
+  assert.equal(await page.locator(`[id="${panelId}"]`).isVisible(), false);
   await story("ui-choiceselect--interactive");
   await page.getByRole("button", { name: "표시 순서" }).press("ArrowDown");
   await page.getByRole("option", { name: "최신순" }).press("ArrowDown");
