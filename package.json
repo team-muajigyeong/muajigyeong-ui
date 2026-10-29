@@ -1,6 +1,6 @@
 {
   "name": "@muajigyeong/ui",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Muajigyeong shared React UI components",
   "type": "module",
   "files": [
@@ -70,7 +70,8 @@
     "build:docs": "storybook build --disable-telemetry",
     "prepare": "npm run build",
     "pack": "npm pack",
-    "test:browser": "npm run build:docs && node scripts/verify-components.mjs"
+    "test:browser": "npm run build:docs && node scripts/verify-components.mjs",
+    "sync:colors": "node scripts/sync-colors.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

@@ -140,3 +140,8 @@ AlertDialog와 PopupChoice를 추가했습니다. [사용법·분리 범위·검
 Storybook에서 제어 상태, 제목 포커스, 중첩 모달, 긴 내용과 선택 취소를 확인할 수 있습니다.
 
 0.4.1은 최신 앱의 returnFocusRef·숨김 트리거 복귀 개선까지 포함합니다.
+
+## 전체 색상표 (0.4.2)
+
+앱의 공통 색상 변수 52개를 theme.css로 제공합니다. [사용법과 동기화](docs/colors.md)를 참고하세요.
+Storybook의 Design Tokens / Colors에서 밝은 모드·어두운 모드 견본과 변수명을 확인할 수 있습니다.

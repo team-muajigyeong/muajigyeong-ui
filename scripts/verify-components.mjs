@@ -1,3 +1,4 @@
+import { verifyColors } from "./verify-colors.mjs";
 import { verifyDialogs } from "./verify-dialogs.mjs";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
@@ -212,6 +213,7 @@ try {
       assert.match(source, new RegExp('<' + componentName + '[\\s/>]'), `JSX source must use ${componentName}: ${source}`);
     }
   }
+  await verifyColors(page, base);
   assert.deepEqual(errors, []);
   console.log("PASS: eleven components, modal focus/Escape/nesting, choice confirmation/cancellation, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
 } finally {

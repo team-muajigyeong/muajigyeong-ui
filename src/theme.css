@@ -1,22 +1,83 @@
+/** Synced from the application globals.css by npm run sync:colors. */
 :root {
-  --teal-800: hsl(190, 89%, 34%);
-  --teal-600: hsl(190, 89%, 54%);
   color-scheme: light dark;
-  --sand-100: hsl(38, 70%, 95%);
-  --sand-300: hsl(37, 63%, 89%);
-  --sand-500: hsl(33, 14%, 62%);
-  --sand-600: hsl(33, 14%, 54%);
+  /* === Brand bases === */
+  --brand-sand: #F5E8D3;
+  --brand-teal: #009CB4;
+
+
+  /* === Sand scale */
+  --sand-1000: hsl(33, 14%, 20%);
+  --sand-950: hsl(33, 14%, 23%);
+  --sand-900: hsl(33, 14%, 26%);
   --sand-800: hsl(33, 14%, 34%);
-  --teal-200: hsl(190, 89%, 87%);
-  --teal-300: hsl(190, 89%, 80%);
-  --teal-400: hsl(190, 89%, 73%);
-  --teal-500: hsl(190, 89%, 62%);
+  --sand-700: hsl(33, 14%, 42%);
+  --sand-600: hsl(33, 14%, 54%);
+  --sand-500: hsl(33, 14%, 62%);
+  --sand-400: hsl(35, 24%, 73%);
+  --sand-300: hsl(37, 63%, 89%);
+  --sand-200: hsl(38, 73%, 93%);
+  --sand-100: hsl(38, 70%, 95%);
+  /* === Teal scale (shades/tints) === */
+  --teal-1000: hsl(190, 89%, 20%);
+  --teal-950: hsl(190, 89%, 23%);
   --teal-900: hsl(190, 89%, 26%);
+  --teal-800: hsl(190, 89%, 34%);
   --teal-700: hsl(190, 89%, 42%);
+  --teal-600: hsl(190, 89%, 54%);
+  --teal-500: hsl(190, 89%, 62%);
+  --teal-400: hsl(190, 89%, 73%);
+  --teal-300: hsl(190, 89%, 80%);
+  --teal-200: hsl(190, 89%, 87%);
+  --teal-100: hsl(190, 89%, 95%);
+  --teal-50: hsl(190, 89%, 97%);
+  --coral-1000: hsl(9, 63%, 20%);
+  --coral-950: hsl(9, 63%, 23%);
+  --coral-900: hsl(9, 63%, 26%);
+  --coral-800: hsl(11, 58%, 35%);
+  --coral-700: hsl(13, 54%, 45%);
+  --coral-600: hsl(15, 59%, 54%);
+  --coral-500: hsl(16, 75%, 63%);
+  --coral-400: hsl(16, 87%, 70%); /* base */
+  --coral-300: hsl(16, 100%, 78%);
+  --coral-200: hsl(15, 100%, 85%);
+  --coral-100: hsl(15, 100%, 93%);
   --color-surface: light-dark(var(--sand-100), #252420);
   --color-border: light-dark(#2A2F33, #2A2F33);
   --color-text: light-dark(#0F1214, #EDEEEF);
-  --color-button-accent: light-dark(var(--teal-900), var(--teal-300));
-  --color-textfield-border: light-dark(var(--sand-600), var(--sand-100));
-  --color-body: light-dark(color-mix(in srgb, var(--sand-100), #fff 95%), color-mix(in srgb, var(--sand-300), #000 90%));
+  --color-text-muted: color-mix(in srgb, var(--color-text), transparent 32%);
+  --color-text-subtle: color-mix(in srgb, var(--color-text), transparent 24%);
+  --color-heading: var(--color-text);
+  --color-link: light-dark(var(--teal-900), var(--teal-300));
+  --color-primary: light-dark(var(--teal-900), var(--teal-300));
+  --color-on-primary: light-dark(#fff, var(--teal-1000));
+  --color-button-accent: light-dark(var(--teal-900),var(--teal-300));
+  --color-textfield-border:light-dark(var(--sand-600),var(--sand-100));
+  --color-body: light-dark(color-mix(in srgb, var(--sand-100), #fff 95%),
+    color-mix(in srgb, var(--sand-300), #000 90%));
+
+    --color-header: light-dark(
+    color-mix(in srgb, var(--sand-600), var(--color-body) 55%),
+    color-mix(in srgb, var(--sand-600), var(--color-body) 85%)
+  );
+  --bg-linear-gradient:light-dark(
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-header), transparent 15%),
+      color-mix(in srgb, var(--color-header), transparent 85%)
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-header), transparent 15%),
+      color-mix(in srgb, var(--color-header), transparent 85%)
+    )
+  );
+  --color-tab-selected-text: light-dark(var(--teal-900), var(--teal-400));
+  --color-tab-selected-border:light-dark(
+    rgb(255 255 255 / .7),
+    rgb(255 255 255 / .05)
+  );
 }
+
+:root.theme-light { color-scheme: light; }
+:root.theme-dark { color-scheme: dark; }
