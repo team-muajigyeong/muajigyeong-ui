@@ -1,0 +1,150 @@
+.choice-opener {
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 1em;
+  .choice-inner {
+    box-sizing: border-box;
+    min-width: 8em;
+    font-size: 1.1rem;
+    border-radius: 1em;
+    border: solid 0.1em;
+    position: relative;
+    display: inline-flex;
+    padding: 0.5em;
+  }
+
+  .choice-value {
+    display: inline-flex;
+    height: 1.2em;
+    align-items: center;  
+  }
+  .choice-icon {
+    display: inline-flex;
+    height: 1.3rem; width: 1.3rem;
+    margin-left:auto;
+    border-radius: .5em;
+    align-items: center;
+    justify-content: center;
+    color: light-dark(var(--teal-700),var(--teal-400));
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .choice-dialog::backdrop {
+    background-color: Canvas;
+  }
+
+  .choice-dialog .choice-body {
+    background: Canvas;
+    background-color: Canvas;
+    color: CanvasText;
+    border: 2px solid CanvasText;
+    box-shadow: none;
+  }
+
+  .choice-opener .choice-inner,
+  .choice-dialog .choice-options label,
+  .choice-dialog .choice-options [type=radio],
+  .choice-dialog .button-list button {
+    background: ButtonFace;
+    background-color: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+
+  .choice-opener .choice-icon {
+    color: ButtonText;
+  }
+}
+
+.choice-dialog {
+  &[open] {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;  
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .choice-body {
+    display: flex;
+    border-radius: 1em;
+    flex-direction: column;
+    box-shadow: 0 0.15em 0.2em 0.05em rgb(0 0 0 / .5);
+    gap: 1em;
+    min-height: 300px;
+    width: 600px;
+    padding: 2em;
+    background-color: light-dark(
+      color-mix(in srgb, var(--sand-100), white 50%),
+      color-mix(in srgb, var(--teal-900), #252525 90%)
+    );
+    @media (max-width:1024px) {
+      width: 95%;
+    }
+    .choice-options {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        width: 100%;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        &:has(:checked) {
+          color: light-dark(var(--teal-800),var(--teal-200));
+          font-weight: bold;
+        }
+        [type=radio] {
+          appearance: none;
+          width: 1.8em; height: 1.8em;
+          border-radius: 50%;
+          border: solid 0.1em;
+          position: relative;
+          overflow: hidden;
+          color: light-dark(var(--teal-800),var(--teal-200));
+          &::after {
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+            content:"";
+            border: solid 0.3em;
+            box-sizing: border-box;
+            border-radius: 50%;
+            display: block;
+            width: .85em; height: .85em;
+            opacity: 0;
+            color: light-dark(var(--teal-600),var(--teal-500));
+            background-color: light-dark(var(--teal-300),var(--teal-200));
+          }
+          &:checked::after {
+            content:"";
+            opacity: 1;
+          }
+        }
+      }
+    }
+    .button-list {
+      display: flex;
+      gap: 1em;
+      justify-content: right;
+      button {
+        border-radius: .5em;
+        padding-inline:.5em;
+      }
+    }
+  }
+}

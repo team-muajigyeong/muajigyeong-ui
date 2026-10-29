@@ -1,3 +1,4 @@
+import { verifyDialogs } from "./verify-dialogs.mjs";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -188,7 +189,9 @@ try {
   await page.goto(`${base}?id=ui-formactionbuttons--docs&viewMode=docs`);
   await page.getByRole("heading", { name: "FormActionButtons", exact: true }).waitFor();
   await page.getByText("Additional class for the cancel button; owned by the consuming app.", { exact: false }).first().waitFor();
+  await verifyDialogs(page, base);
   const documentedComponents = [
+    ["alertdialog", "AlertDialog"], ["popupchoice", "PopupChoice"],
     ['accordion', 'Accordion'], ['checkchip', 'CheckChip'],
     ['choiceselect', 'ChoiceSelect'], ['controlledinput', 'ControlledInput'],
     ['sectionwithheader', 'SectionWithHeader'], ['formactionbuttons', 'FormActionButtons'],
@@ -210,7 +213,7 @@ try {
     }
   }
   assert.deepEqual(errors, []);
-  console.log("PASS: nine components, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
+  console.log("PASS: eleven components, modal focus/Escape/nesting, choice confirmation/cancellation, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
 } finally {
   await browser?.close();
   await new Promise(resolve => server.close(resolve));

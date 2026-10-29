@@ -1,6 +1,6 @@
 {
   "name": "@muajigyeong/ui",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Muajigyeong shared React UI components",
   "type": "module",
   "files": [
@@ -52,6 +52,14 @@
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"
+    },
+    "./modal-dialogs": {
+      "types": "./dist/modal-dialogs/index.d.ts",
+      "import": "./dist/modal-dialogs/index.js"
+    },
+    "./popup-choice": {
+      "types": "./dist/popup-choice/index.d.ts",
+      "import": "./dist/popup-choice/index.js"
     }
   },
   "scripts": {

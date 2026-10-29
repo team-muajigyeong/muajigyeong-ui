@@ -18,3 +18,8 @@ export { AOSTextField } from "./text-field/index.js";
 export type { AOSTextFieldProps } from "./text-field/index.js";
 export { default as Switch } from "./switch/index.js";
 export type { SwitchProps } from "./switch/index.js";
+
+export { AlertDialog } from "./modal-dialogs/index.js";
+export type { AlertDialogProps, AlertDialogOptions, BaseDialogProps } from "./modal-dialogs/index.js";
+export { PopupChoice } from "./popup-choice/index.js";
+export type { PopUpChoiceProps } from "./popup-choice/index.js";

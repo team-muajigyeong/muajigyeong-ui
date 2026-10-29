@@ -1,4 +1,6 @@
 :root {
+  --teal-800: hsl(190, 89%, 34%);
+  --teal-600: hsl(190, 89%, 54%);
   color-scheme: light dark;
   --sand-100: hsl(38, 70%, 95%);
   --sand-300: hsl(37, 63%, 89%);

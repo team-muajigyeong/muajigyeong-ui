@@ -133,3 +133,8 @@ AOSTextField를 사용합니다. 기존 getValue/setValue 및 pressed/setPressed
 PLAYWRIGHT_CHANNEL=msedge 환경에서 scripts/verify-components.mjs로 기존 동작과
 아홉 컴포넌트의 모든 문서 예제에서 JSX 이름 표시를 확인했습니다.
 향후 npm run test:browser에서도 이 회귀 검증을 실행합니다.
+
+## 0.4.0 대화상자
+
+AlertDialog와 PopupChoice를 추가했습니다. [사용법·분리 범위·검증](docs/0.4.0.md)을 참고하세요.
+Storybook에서 제어 상태, 제목 포커스, 중첩 모달, 긴 내용과 선택 취소를 확인할 수 있습니다.
