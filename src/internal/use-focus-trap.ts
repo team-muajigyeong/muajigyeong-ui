@@ -22,10 +22,11 @@ type UseFocusTrapParams = {
   containerRef: RefObject<HTMLElement | null>;
   initialFocusRef?: RefObject<HTMLElement | null>;
   returnFocusRef?: RefObject<HTMLElement | null>;
+  restoreFocus?: boolean;
   active: boolean;
 };
 
-export default function useFocusTrap({ containerRef, initialFocusRef, returnFocusRef, active }: UseFocusTrapParams) {
+export default function useFocusTrap({ containerRef, initialFocusRef, returnFocusRef, restoreFocus = true, active }: UseFocusTrapParams) {
   useEffect(() => {
     if (!active) return;
 
@@ -97,7 +98,7 @@ export default function useFocusTrap({ containerRef, initialFocusRef, returnFocu
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      previousFocusedElement?.focus();
+      if (restoreFocus) previousFocusedElement?.focus();
     };
-  }, [active, containerRef, initialFocusRef, returnFocusRef]);
+  }, [active, containerRef, initialFocusRef, returnFocusRef, restoreFocus]);
 }

@@ -138,3 +138,5 @@ PLAYWRIGHT_CHANNEL=msedge 환경에서 scripts/verify-components.mjs로 기존 �
 
 AlertDialog와 PopupChoice를 추가했습니다. [사용법·분리 범위·검증](docs/0.4.0.md)을 참고하세요.
 Storybook에서 제어 상태, 제목 포커스, 중첩 모달, 긴 내용과 선택 취소를 확인할 수 있습니다.
+
+0.4.1은 최신 앱의 returnFocusRef·숨김 트리거 복귀 개선까지 포함합니다.

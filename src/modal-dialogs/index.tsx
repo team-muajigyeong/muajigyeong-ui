@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
-import type { Dispatch, HTMLAttributes, ReactElement, ReactNode, RefAttributes, SetStateAction } from "react";
+import type { Dispatch, HTMLAttributes, ReactElement, ReactNode, RefAttributes, RefObject, SetStateAction } from "react";
 import useFocusTrap from "../internal/use-focus-trap.js";
 import { createCX } from "../internal/single-class.js";
 import styles from "./style.module.css";
@@ -22,6 +22,8 @@ export type BaseDialogProps = {
   onOK?: () => void;
   onCancel?: () => void;
   onAfterClose?: () => void;
+  /** 실제 열기 요소가 사라지거나 비활성화되는 경우 지정할 복귀 위치. */
+  returnFocusRef?: RefObject<HTMLElement | null>;
   options?: AlertDialogOptions;
   className?:string
   modalController?:[boolean,Dispatch<SetStateAction<boolean>>]
@@ -44,11 +46,13 @@ export const AlertDialog = ({
   bodyProps,
   onCancel,
   onAfterClose,
+  returnFocusRef,
   className,
   ...props
 }: AlertDialogProps) => {
   const dlgRef = useRef<HTMLDialogElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const titleId = useId();
   const titleRef = useRef<HTMLDivElement>(null);
   const internalController = useState(false);
@@ -59,16 +63,12 @@ export const AlertDialog = ({
     onCancel?.();
   };
 
-  useFocusTrap({
-    containerRef: dlgRef,
-    initialFocusRef: options?.initialFocus === "title" ? titleRef : undefined,
-    active: isOpen,
-  });
   useEffect(() => {
     const dialog = dlgRef.current;
     if (!dialog) return;
 
     if (isOpen && !dialog.open) {
+      previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       dialog.showModal();
       // A closed native dialog cannot receive focus; apply title focus after opening.
       if (options?.initialFocus === "title") titleRef.current?.focus();
@@ -78,6 +78,14 @@ export const AlertDialog = ({
       dialog.close();
     }
   }, [isOpen, options?.initialFocus]);
+
+  useFocusTrap({
+    containerRef: dlgRef,
+    initialFocusRef: options?.initialFocus === "title" ? titleRef : undefined,
+    active: isOpen,
+    // 네이티브 dialog가 닫혀 바깥 영역의 inert가 해제된 뒤 onClose에서 복귀한다.
+    restoreFocus: false,
+  });
 
   useEffect(() => {
     if (!isOpen) {
@@ -124,12 +132,20 @@ export const AlertDialog = ({
         }}
         onClose={(event) => {
           if (event.target !== event.currentTarget) return;
+          if (event.currentTarget.open) return;
           if (isOpen) {
             setIsOpen(false);
           }
-          // 렌더 과정에서 열기 버튼이 교체되어도 현재 버튼으로 복귀한다.
-          // dialog가 닫힌 뒤 실행해야 바깥 모달의 inert 상태가 해제된다.
-          openerRef.current?.focus();
+          // 제어용 숨겨진 버튼은 건너뛰고 실제 열기 요소로 복귀한다.
+          // 다시 렌더된 열기 버튼과 중첩 모달 안의 복귀 위치도 지원한다.
+          for (const target of [returnFocusRef?.current, openerRef.current, previousFocusRef.current]) {
+            if (!target?.isConnected || target === document.body || target.matches(":disabled")
+              || target.closest('[hidden], [inert], [aria-hidden="true"], dialog:not([open])')
+              || target.getClientRects().length === 0 || getComputedStyle(target).visibility === "hidden") continue;
+            target.focus();
+            if (document.activeElement === target) break;
+          }
+          previousFocusRef.current = null;
           onAfterClose?.();
         }}
         onClick={(event) => {

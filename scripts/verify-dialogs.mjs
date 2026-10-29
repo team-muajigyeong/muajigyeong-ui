@@ -43,6 +43,14 @@ export async function verifyDialogs(page, base) {
   await open();
   await dialog().getByRole('button', { name: 'Dismiss', exact: true }).click();
   await page.getByText('cancel 2, closed 3', { exact: true }).waitFor();
+  for (const [id, target] of [['hidden-trigger', 'Actual trigger'], ['return-focus', 'Fallback target']]) {
+    await story('ui-alertdialog--' + id);
+    await page.getByRole('button', { name: 'Actual trigger', exact: true }).click();
+    await dialog().waitFor();
+    await page.keyboard.press('Escape');
+    await dialog().waitFor({ state: 'hidden' });
+    assert.equal(await page.getByRole('button', { name: target, exact: true }).evaluate(el => el === document.activeElement), true);
+  }
   await story('ui-alertdialog--nested');
   await open();
   await page.getByRole('button', { name: 'Open inner', exact: true }).click();

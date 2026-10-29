@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertDialog, type BaseDialogProps } from "../src/modal-dialogs";
 import { PopupChoice } from "../src/popup-choice";
@@ -36,3 +36,19 @@ export const LongContent: Story = { args: { options: { initialFocus: "title" }, 
   {Array.from({ length: 30 }, (_, i) => <p key={i}>Paragraph {i + 1}: Scrollable content for a small viewport.</p>)}
   <button type="button">Final action</button>
 </> } };
+
+const HiddenOpenButton: BaseDialogProps["OpenButton"] = props => <button {...props} type="button" hidden>Hidden trigger</button>;
+export const HiddenTrigger: Story = { render: function HiddenTrigger(args) {
+  const controller = useState(false);
+  return <><button type="button" onClick={() => controller[1](true)}>Actual trigger</button>
+    <AlertDialog {...args} modalController={controller} OpenButton={HiddenOpenButton} />
+  </>;
+} };
+export const ReturnFocus: Story = { render: function ReturnFocus(args) {
+  const controller = useState(false);
+  const returnFocusRef = useRef<HTMLButtonElement>(null);
+  return <><button ref={returnFocusRef} type="button">Fallback target</button>
+    <button type="button" disabled={controller[0]} onClick={() => controller[1](true)}>Actual trigger</button>
+    <AlertDialog {...args} modalController={controller} OpenButton={HiddenOpenButton} returnFocusRef={returnFocusRef} />
+  </>;
+} };
