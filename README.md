@@ -150,3 +150,10 @@ Storybook의 Design Tokens / Colors에서 밝은 모드·어두운 모드 견본
 
 Calendar를 DatePicker로 정리했습니다. [사용법과 변경 사항](docs/date-picker.md)을 참고하세요.
 Storybook UI / DatePicker에서 단일 날짜·기간·선택 제한·미선택·내부 상태 예제를 확인할 수 있습니다.
+
+## Docs 시스템 테마
+
+Docs의 본문·미리보기·props 표·소스 영역은 시스템의 밝은/어두운 테마를 따릅니다.
+열린 문서에서도 시스템 설정 변경을 즉시 반영합니다. `.storybook/SystemDocsContainer.tsx`에서
+표준 DocsContainer의 테마를 선택하며 메뉴 UI 설정과 독립적으로 동작합니다.
+`npm run test:browser`에서 최초 로드·실시간 전환·새로고침을 검증합니다.

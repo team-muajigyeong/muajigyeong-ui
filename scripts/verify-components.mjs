@@ -1,3 +1,4 @@
+import { verifyDocsTheme } from "./verify-docs-theme.mjs";
 import { verifyDatePicker } from "./verify-date-picker.mjs";
 import { verifyColors } from "./verify-colors.mjs";
 import { verifyDialogs } from "./verify-dialogs.mjs";
@@ -217,6 +218,7 @@ try {
     }
   }
   await verifyColors(page, base);
+  await verifyDocsTheme(page, base);
   assert.deepEqual(errors, []);
   console.log("PASS: twelve components including DatePicker, modal focus/Escape/nesting, choice confirmation/cancellation, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
 } finally {
