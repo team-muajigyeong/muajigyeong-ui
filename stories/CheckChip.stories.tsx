@@ -8,9 +8,9 @@ const meta = {
 } satisfies Meta<typeof CheckChip>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Checked: Story = { args: { checked: true } };
-export const Interactive: Story = {
+export const Default: Story = { name: "기본" };
+export const Checked: Story = { name: "선택됨", args: { checked: true } };
+export const Interactive: Story = { name: "상태 변경",
   render: function Interactive(args) {
     const [checked, setChecked] = useState(args.checked);
     return <CheckChip {...args} checked={checked} onChange={setChecked} />;

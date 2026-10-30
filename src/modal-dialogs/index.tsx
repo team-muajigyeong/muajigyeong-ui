@@ -5,20 +5,20 @@ import useFocusTrap from "../internal/use-focus-trap.js";
 import { createCX } from "../internal/single-class.js";
 import styles from "./style.module.css";
 const { cx } = createCX(styles);
-/** Display and initial-focus options for a native modal dialog. */
+/** 브라우저 기본 모달 대화상자의 표시 및 초기 초점 설정. */
 export type AlertDialogOptions = {
   hideTitle?: boolean;
   closeButtonPlacement?: "start" | "end";
   initialFocus?: "first" | "title";
 };
 
-/** Compatible dialog contract; OpenButton must forward its ref and onClick to a button. */
+/** 대화상자의 공통 속성. OpenButton은 전달받은 ref와 onClick을 실제 버튼에 연결해야 합니다. */
 export type BaseDialogProps = {
   children: ReactNode;
   title: string;
   CloseButton?: (props: HTMLAttributes<HTMLButtonElement>) => ReactElement;
   OpenButton: (props: HTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>) => ReactElement;
-  /** @deprecated Reserved for compatibility; handle confirmation in children. */
+  /** @deprecated 호환성을 위해 유지합니다. 확인 동작은 children에서 처리하세요. */
   onOK?: () => void;
   onCancel?: () => void;
   onAfterClose?: () => void;
@@ -29,13 +29,13 @@ export type BaseDialogProps = {
   modalController?:[boolean,Dispatch<SetStateAction<boolean>>]
 };
 
-/** Props for the dialog shell and its scrollable body. */
+/** 대화상자 외곽과 스크롤 가능한 본문의 속성. */
 export type AlertDialogProps = BaseDialogProps & {
   props?: HTMLAttributes<HTMLDivElement>;
   bodyProps?: HTMLAttributes<HTMLDivElement>;
 };
 
-/** Native modal with focus containment, Escape dismissal and opener focus restoration. */
+/** 초점을 내부에 유지하고 Escape로 닫으며, 닫은 뒤 열기 요소로 초점을 돌려주는 기본 모달 대화상자. */
 export const AlertDialog = ({
   children,
   title,

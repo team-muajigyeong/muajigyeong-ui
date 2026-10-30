@@ -13,22 +13,22 @@ const cx = (...classes: Array<string | false | null | undefined>) => classes.fil
 type DeniedAttrib = "type" | "role" | "aria-checked" | "aria-disabled" | "aria-label" | "aria-labelledby";
 
 export type SwitchProps = {
-  /** Visible label associated with the switch. */
+  /** 스위치에 연결된 화면 표시 이름. */
   label: string;
-  /** Optional accessible name overriding the visible label. */
+  /** 화면 표시 이름 대신 사용할 접근 가능한 이름. */
   ariaLabel?: string;
   icon?: ReactElement<IconType>;
-  /** Controlled state. Effective only when setPressed is also supplied. */
+  /** 부모에서 제어하는 상태. setPressed도 전달한 경우에만 적용됩니다. */
   pressed?: boolean;
-  /** Additional class on the outer label; native className targets the input. */
+  /** 바깥 label에 추가할 클래스. 기본 className은 input에 적용됩니다. */
   labelClassName?: string;
-  /** Receives the next state. Use with pressed for parent-controlled state. */
+  /** 변경할 상태를 전달합니다. 부모에서 제어하려면 pressed와 함께 사용하세요. */
   setPressed?: Dispatch<SetStateAction<boolean>> | ((prev: boolean) => void);
-  /** Receives the next state once per user change, in either state mode. */
+  /** 내부·외부 상태 관리 모두에서 사용자 변경마다 다음 상태를 한 번 전달합니다. */
   onChangeCallback?: (value: boolean) => void;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, DeniedAttrib>;
 
-/** Checkbox-based switch supporting internal state and parent-controlled state. */
+/** 내부 상태 관리와 부모의 상태 제어를 지원하는 체크박스 기반 스위치. */
 export default function Switch({
   label,
   ariaLabel,

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { colorTokens } from "./color-tokens";
 import "./colors.css";
 
-/** Browse the exact shared CSS variables in a chosen color scheme. */
+/** 선택한 색상 모드에서 공통 CSS 변수의 실제 색상을 확인합니다. */
 function ColorPalette({ scheme }: { scheme: "light" | "dark" }) {
   const groups = [
     ["브랜드", "--brand-"], ["Sand", "--sand-"], ["Teal", "--teal-"],
@@ -27,6 +27,6 @@ const meta = { title: "Design Tokens/Colors", component: ColorPalette,
 } satisfies Meta<typeof ColorPalette>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Light: Story = {};
-export const Dark: Story = { args: { scheme: "dark" } };
-export const Comparison: Story = { render: () => <div className="palette-comparison"><ColorPalette scheme="light" /><ColorPalette scheme="dark" /></div> };
+export const Light: Story = { name: "밝은 테마" };
+export const Dark: Story = { name: "어두운 테마", args: { scheme: "dark" } };
+export const Comparison: Story = { name: "테마 비교", render: () => <div className="palette-comparison"><ColorPalette scheme="light" /><ColorPalette scheme="dark" /></div> };

@@ -5,20 +5,20 @@ import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 
 export type StatusToastProps = {
-  /** Visible message. An empty string hides the toast. */
+  /** 화면에 표시할 메시지. 빈 문자열이면 토스트를 숨깁니다. */
   message: string;
-  /** Alternative announcement for assistive technology. */
+  /** 보조 기술에 전달할 별도 안내 문구. */
   announcement?: string;
-  /** Visibility duration in milliseconds. Defaults to 5000. */
+  /** 표시 시간(밀리초). 기본값은 5000입니다. */
   duration?: number;
-  /** Change this value to show the same message again. */
+  /** 같은 메시지를 다시 표시하려면 이 값을 변경하세요. */
   notificationId?: string | number;
-  /** Consumer styling, including position. */
+  /** 위치를 포함해 사용하는 쪽에서 지정하는 스타일. */
   className?: string;
   tone?: "default" | "error";
 };
 
-/** Announces transient feedback without moving focus. */
+/** 초점을 이동하지 않고 일시적인 피드백을 알립니다. */
 export default function StatusToast({ message, announcement, duration = 5000, tone = "default", notificationId, className }: StatusToastProps) {
   const [visible, setVisible] = useState(Boolean(message));
 

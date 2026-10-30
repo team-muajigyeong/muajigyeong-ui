@@ -5,11 +5,11 @@ const meta = { title: "UI/FormActionButtons", component: FormActionButtons,
   args: { onCancel: () => {}, onConfirm: () => {} } } satisfies Meta<typeof FormActionButtons>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Compact: Story = { args: { density: "compact" } };
-export const Busy: Story = { args: { confirmBusy: true, confirmLabel: "저장 중" } };
-export const Disabled: Story = { args: { confirmDisabled: true, cancelDisabled: true } };
-export const Interactive: Story = { render: function Interactive(args) {
+export const Default: Story = { name: "기본" };
+export const Compact: Story = { name: "좁은 간격", args: { density: "compact" } };
+export const Busy: Story = { name: "처리 중", args: { confirmBusy: true, confirmLabel: "저장 중" } };
+export const Disabled: Story = { name: "비활성", args: { confirmDisabled: true, cancelDisabled: true } };
+export const Interactive: Story = { name: "상태 변경", render: function Interactive(args) {
   const [confirmed, setConfirmed] = useState(0);
   const [cancelled, setCancelled] = useState(0);
   const [busy, setBusy] = useState(false);

@@ -8,9 +8,9 @@ const meta = {
 } satisfies Meta<typeof Accordion>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const NestedHeading: Story = {
+export const Default: Story = { name: "기본" };
+export const NestedHeading: Story = { name: "하위 제목 단계",
   args: { headingLevel: 5 },
   render: (args) => <section><h4>여행 일정</h4><Accordion {...args} /></section>,
 };
-export const Empty: Story = { args: { items: [] } };
+export const Empty: Story = { name: "빈 목록", args: { items: [] } };

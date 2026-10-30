@@ -157,3 +157,7 @@ Docs의 본문·미리보기·props 표·소스 영역은 시스템의 밝은/�
 열린 문서에서도 시스템 설정 변경을 즉시 반영합니다. `.storybook/SystemDocsContainer.tsx`에서
 표준 DocsContainer의 테마를 선택하며 메뉴 UI 설정과 독립적으로 동작합니다.
 `npm run test:browser`에서 최초 로드·실시간 전환·새로고침을 검증합니다.
+
+### Storybook 한국어 문서
+
+컴포넌트와 props 설명은 소스의 한국어 JSDoc에서 생성합니다. 설명을 수정할 때는 해당 JSDoc을 갱신하세요. 예제 이름은 각 스토리의 name에서 관리하며, API 이름과 기존 스토리 ID는 유지합니다. Storybook 자체에서 제공하는 메뉴와 버튼 문구는 기본 언어를 사용합니다.

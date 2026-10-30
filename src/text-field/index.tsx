@@ -12,20 +12,20 @@ const cx = (...classes: Array<string | false | null | undefined>) => classes.fil
 
 export type AOSTextFieldProps = ComponentPropsWithRef<"input"> & {
   type?: "text" | "password" | "email" | "url" | "search" | "tel" | "date";
-  /** Visible label associated with the input. */
+  /** 입력 요소에 연결된 화면 표시 이름. */
   label: string;
   icon?: ReactNode;
-  /** Controlled text value. Use with setValue; avoid mixing with native value/onChange. */
+  /** 부모에서 제어하는 입력값. setValue와 함께 사용하고 기본 value/onChange와 혼용하지 마세요. */
   getValue?: string;
-  /** Parent state setter for getValue. Omit both props for internal state. */
+  /** getValue를 갱신하는 부모 상태 변경 함수. 내부 상태를 사용하려면 두 속성을 모두 생략하세요. */
   setValue?: Dispatch<SetStateAction<string>>;
-  /** Default or compact field spacing. */
+  /** 기본 또는 좁은 입력 필드 간격. */
   density?: "default" | "compact";
-  /** Floating label or stacked label above the input. */
+  /** 떠 있는 라벨 또는 입력 위에 배치하는 라벨. */
   labelPlacement?: "floating" | "stacked";
 };
 
-/** Text input with optional icon, label layout and password visibility toggle. */
+/** 아이콘, 라벨 배치, 비밀번호 표시 전환을 지원하는 텍스트 입력. */
 export function AOSTextField({
   getValue,
   setValue,

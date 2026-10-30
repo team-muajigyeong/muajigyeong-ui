@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 /** Verify native modal behavior against the production Storybook build. */
 export async function verifyDialogs(page, base) {
   const story = id => page.goto(base + '?id=' + id + '&viewMode=story');
-  const open = () => page.getByRole('button', { name: 'Open dialog', exact: true }).click();
-  const dialog = () => page.getByRole('dialog', { name: 'Example dialog', exact: true });
+  const open = () => page.getByRole('button', { name: '대화상자 열기', exact: true }).click();
+  const dialog = () => page.getByRole('dialog', { name: '대화상자 예제', exact: true });
   const closeName = '\uB2EB\uAE30';
   await story('ui-alertdialog--default');
   await open();
@@ -17,7 +17,7 @@ export async function verifyDialogs(page, base) {
   assert.equal(await dialog().getByRole('button', { name: closeName, exact: true }).evaluate(el => el === document.activeElement), true);
   await page.keyboard.press('Escape');
   await dialog().waitFor({ state: 'hidden' });
-  assert.equal(await page.getByRole('button', { name: 'Open dialog', exact: true }).evaluate(el => el === document.activeElement), true);
+  assert.equal(await page.getByRole('button', { name: '대화상자 열기', exact: true }).evaluate(el => el === document.activeElement), true);
   await open();
   await page.mouse.click(2, 2);
   await dialog().waitFor({ state: 'hidden' });
@@ -34,18 +34,18 @@ export async function verifyDialogs(page, base) {
   await open();
   assert.match(await dialog().getAttribute('class'), /consumer-dialog/);
   assert.match(await dialog().getByRole('region').getAttribute('class'), /consumer-body/);
-  await dialog().getByRole('button', { name: 'Confirm', exact: true }).click();
-  await page.getByText('cancel 0, closed 1', { exact: true }).waitFor();
-  assert.equal(await page.getByRole('button', { name: 'Open dialog', exact: true }).evaluate(el => el === document.activeElement), true);
-  await page.getByRole('button', { name: 'External open', exact: true }).click();
+  await dialog().getByRole('button', { name: '확인', exact: true }).click();
+  await page.getByText('취소 0, 닫힘 1', { exact: true }).waitFor();
+  assert.equal(await page.getByRole('button', { name: '대화상자 열기', exact: true }).evaluate(el => el === document.activeElement), true);
+  await page.getByRole('button', { name: '외부에서 열기', exact: true }).click();
   await page.keyboard.press('Escape');
-  await page.getByText('cancel 1, closed 2', { exact: true }).waitFor();
+  await page.getByText('취소 1, 닫힘 2', { exact: true }).waitFor();
   await open();
-  await dialog().getByRole('button', { name: 'Dismiss', exact: true }).click();
-  await page.getByText('cancel 2, closed 3', { exact: true }).waitFor();
-  for (const [id, target] of [['hidden-trigger', 'Actual trigger'], ['return-focus', 'Fallback target']]) {
+  await dialog().getByRole('button', { name: '닫기', exact: true }).click();
+  await page.getByText('취소 2, 닫힘 3', { exact: true }).waitFor();
+  for (const [id, target] of [['hidden-trigger', '실제 열기 버튼'], ['return-focus', '대체 초점 위치']]) {
     await story('ui-alertdialog--' + id);
-    await page.getByRole('button', { name: 'Actual trigger', exact: true }).click();
+    await page.getByRole('button', { name: '실제 열기 버튼', exact: true }).click();
     await dialog().waitFor();
     await page.keyboard.press('Escape');
     await dialog().waitFor({ state: 'hidden' });
@@ -53,15 +53,15 @@ export async function verifyDialogs(page, base) {
   }
   await story('ui-alertdialog--nested');
   await open();
-  await page.getByRole('button', { name: 'Open inner', exact: true }).click();
-  const inner = page.getByRole('dialog', { name: 'Inner dialog', exact: true });
+  await page.getByRole('button', { name: '내부 대화상자 열기', exact: true }).click();
+  const inner = page.getByRole('dialog', { name: '내부 대화상자', exact: true });
   await inner.waitFor();
   for (let i=0; i<5; i++) { await page.keyboard.press('Tab'); assert.equal(await inner.evaluate(el => el.contains(document.activeElement)), true); }
   await page.keyboard.press('Escape');
   await inner.waitFor({ state: 'hidden' });
   assert.equal(await dialog().isVisible(), true);
-  assert.equal(await page.getByRole('button', { name: 'Open inner', exact: true }).evaluate(el => el === document.activeElement), true);
-  await page.getByRole('button', { name: /Choose option/ }).click();
+  assert.equal(await page.getByRole('button', { name: '내부 대화상자 열기', exact: true }).evaluate(el => el === document.activeElement), true);
+  await page.getByRole('button', { name: /항목 고르기/ }).click();
   const choice = page.getByRole('dialog', { name: '\uC635\uC158 \uC120\uD0DD', exact: true });
   await choice.waitFor();
   await page.keyboard.press('Escape');
@@ -73,30 +73,30 @@ export async function verifyDialogs(page, base) {
   await page.setViewportSize({ width: 390, height: 640 });
   await open();
   assert.equal(await dialog().evaluate(el => el.scrollWidth <= el.clientWidth + 2), true);
-  await dialog().getByRole('button', { name: 'Final action', exact: true }).focus();
-  assert.equal(await dialog().getByRole('button', { name: 'Final action', exact: true }).evaluate(el => { const r=el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }), true);
+  await dialog().getByRole('button', { name: '마지막 동작', exact: true }).focus();
+  assert.equal(await dialog().getByRole('button', { name: '마지막 동작', exact: true }).evaluate(el => { const r=el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }), true);
   await page.emulateMedia({ forcedColors: 'active' });
   assert.equal(await dialog().locator(':scope > div').evaluate(el => getComputedStyle(el).borderTopStyle), 'solid');
   await page.emulateMedia({ forcedColors: 'none' });
   await page.setViewportSize({ width: 1000, height: 800 });
   await story('ui-popupchoice--default');
-  const opener = page.getByRole('button', { name: /Choose option/ });
+  const opener = page.getByRole('button', { name: /항목 고르기/ });
   await opener.click();
-  await choice.getByRole('radio', { name: 'Beta', exact: true }).check();
+  await choice.getByRole('radio', { name: '항목 나', exact: true }).check();
   await choice.getByRole('button', { name: '\uD655\uC778', exact: true }).click();
   await choice.waitFor({ state: 'hidden' });
-  await page.getByRole('button', { name: /Choose option.*Beta/s }).waitFor();
-  assert.match(await opener.innerText(), /Beta/);
+  await page.getByRole('button', { name: /항목 고르기.*항목 나/s }).waitFor();
+  assert.match(await opener.innerText(), /항목 나/);
   await opener.click();
-  await choice.getByRole('radio', { name: 'Gamma', exact: true }).check();
+  await choice.getByRole('radio', { name: '항목 다', exact: true }).check();
   await choice.getByRole('button', { name: '\uCDE8\uC18C', exact: true }).click();
   await opener.click();
-  assert.equal(await choice.getByRole('radio', { name: 'Beta', exact: true }).isChecked(), true);
-  await choice.getByRole('radio', { name: 'Alpha', exact: true }).check();
+  assert.equal(await choice.getByRole('radio', { name: '항목 나', exact: true }).isChecked(), true);
+  await choice.getByRole('radio', { name: '항목 가', exact: true }).check();
   await page.keyboard.press('Escape');
   await choice.waitFor({ state: 'hidden' });
-  await page.getByRole('button', { name: /Choose option.*Beta/s }).waitFor();
-  assert.match(await opener.innerText(), /Beta/);
+  await page.getByRole('button', { name: /항목 고르기.*항목 나/s }).waitFor();
+  assert.match(await opener.innerText(), /항목 나/);
   assert.equal(await opener.evaluate(el => el === document.activeElement), true);
   await opener.click();
   await page.mouse.click(2, 2);
@@ -105,7 +105,7 @@ export async function verifyDialogs(page, base) {
   const ids=await page.locator('dialog, input[type=radio]').evaluateAll(es => es.map(e => e.id));
   assert.equal(new Set(ids).size, ids.length);
   await story('ui-popupchoice--empty');
-  await page.getByRole('button', { name: /Choose option/ }).click();
+  await page.getByRole('button', { name: /항목 고르기/ }).click();
   await page.keyboard.press('Escape');
   await choice.waitFor({ state: 'hidden' });
 }

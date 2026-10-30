@@ -8,18 +8,18 @@ export type FormActionButtonsProps = {
   onCancel: () => void;
   onConfirm: () => void;
   confirmDisabled?: boolean;
-  /** Keeps the button focusable but suppresses confirmation while work is pending. */
+  /** 작업 중에도 버튼에 초점을 둘 수 있지만 확인 동작은 실행하지 않습니다. */
   confirmBusy?: boolean;
   cancelDisabled?: boolean;
   className?: string;
-  /** Additional class for the cancel button; owned by the consuming app. */
+  /** 취소 버튼에 추가할 CSS 클래스. 사용하는 애플리케이션에서 정의합니다. */
   cancelButtonClassName?: string;
-  /** Additional class for the confirm button; owned by the consuming app. */
+  /** 확인 버튼에 추가할 CSS 클래스. 사용하는 애플리케이션에서 정의합니다. */
   confirmButtonClassName?: string;
   density?: "default" | "compact";
 };
 
-/** Renders cancel and confirm actions with consumer-owned callbacks and styles. */
+/** 사용하는 쪽에서 지정한 콜백과 스타일로 취소·확인 버튼을 표시합니다. */
 export default function FormActionButtons({
   cancelLabel = "취소",
   confirmLabel = "저장",

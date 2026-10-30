@@ -5,34 +5,34 @@ import { FaChevronDown } from "react-icons/fa";
 import styles from "./style.module.css";
 
 export type ChoiceSelectOption = {
-  /** Controlled value supplied by the parent. */
+  /** 부모에서 전달하는 제어 값. */
   value: string;
-  /** Visible and accessible field label. */
+  /** 화면과 보조 기술에 제공하는 필드 이름. */
   label: string;
 };
 
 export type ChoiceSelectProps = {
-  /** Controlled value supplied by the parent. */
+  /** 부모에서 전달하는 제어 값. */
   value: string;
-  /** Available values and their display labels. */
+  /** 선택 가능한 값과 화면에 표시할 이름 목록. */
   options: readonly ChoiceSelectOption[];
-  /** Receives the next value; update the parent state in this callback. */
+  /** 변경할 값을 전달합니다. 이 콜백에서 부모 상태를 갱신하세요. */
   onChange: (value: string) => void;
-  /** Text shown when no value is selected. */
+  /** 값이 비어 있을 때 표시할 안내 문구. */
   placeholder: string;
-  /** Accessible name for the selection control. */
+  /** 선택 컨트롤의 접근 가능한 이름. */
   ariaLabel?: string;
-  /** ID of the element containing help text. */
+  /** 도움말을 담은 요소의 ID. */
   ariaDescribedBy?: string;
-  /** Disables user input. */
+  /** 사용자 입력을 비활성화합니다. */
   disabled?: boolean;
 };
 
 const cx = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
 
 /**
- * Shared controlled UI; application state and domain data remain with the consumer.
- * @param props Display and interaction options.
+ * 부모에서 상태를 제어하는 공통 UI. 애플리케이션 상태와 도메인 데이터는 사용하는 쪽에서 관리합니다.
+ * @param props 표시 및 상호작용 설정.
  */
 export default function ChoiceSelect({
   value,

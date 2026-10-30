@@ -8,10 +8,10 @@ const meta = {
 } satisfies Meta<typeof ChoiceSelect>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Disabled: Story = { args: { disabled: true } };
-export const Selected: Story = { args: { value: "recent" } };
-export const Interactive: Story = {
+export const Default: Story = { name: "기본" };
+export const Disabled: Story = { name: "비활성", args: { disabled: true } };
+export const Selected: Story = { name: "값 선택됨", args: { value: "recent" } };
+export const Interactive: Story = { name: "상태 변경",
   render: function Interactive(args) {
     const [value, setValue] = useState(args.value);
     return <ChoiceSelect {...args} value={value} onChange={setValue} />;

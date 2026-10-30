@@ -6,7 +6,7 @@ import { FaChevronDown } from "react-icons/fa";
 import useFocusTrap from "../internal/use-focus-trap.js";
 import styles from "./style.module.css";
 
-/** Selection is committed by Confirm and discarded by Cancel or Escape. */
+/** 확인을 누르면 선택을 적용하고, 취소 또는 Escape를 누르면 변경을 버립니다. */
 export type PopUpChoiceProps = {
   label: string;
   name: string;
@@ -17,7 +17,7 @@ const DEFAULT_OPTION_LABEL = "\uC635\uC158 \uC120\uD0DD";
 const CANCEL_LABEL = "\uCDE8\uC18C";
 const CONFIRM_LABEL = "\uD655\uC778";
 
-/** Native radio-choice dialog preserving the existing uncontrolled selection API. */
+/** 내부에서 선택 상태를 관리하는 기존 API를 유지하는 라디오 선택 대화상자. */
 export function PopupChoice({ label, options, name }: PopUpChoiceProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);

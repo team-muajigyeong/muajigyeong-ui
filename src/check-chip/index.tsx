@@ -4,19 +4,19 @@ import { useId } from "react";
 import styles from "./style.module.css";
 
 export type CheckChipProps = {
-  /** Visible and accessible field label. */
+  /** 화면과 보조 기술에 제공하는 필드 이름. */
   label: string;
-  /** Additional description associated with the input. */
+  /** 입력 요소에 연결할 추가 설명. */
   description?: string;
-  /** Controlled selection state. */
+  /** 부모에서 제어하는 선택 상태. */
   checked: boolean;
-  /** Receives the next value; update the parent state in this callback. */
+  /** 변경할 값을 전달합니다. 이 콜백에서 부모 상태를 갱신하세요. */
   onChange: (checked: boolean) => void;
 };
 
 /**
- * Shared controlled UI; application state and domain data remain with the consumer.
- * @param props Display and interaction options.
+ * 부모에서 상태를 제어하는 공통 UI. 애플리케이션 상태와 도메인 데이터는 사용하는 쪽에서 관리합니다.
+ * @param props 표시 및 상호작용 설정.
  */
 export default function CheckChip({ label, description, checked, onChange }: CheckChipProps) {
   const id = useId();

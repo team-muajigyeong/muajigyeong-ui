@@ -191,7 +191,7 @@ try {
 
   await page.goto(`${base}?id=ui-formactionbuttons--docs&viewMode=docs`);
   await page.getByRole("heading", { name: "FormActionButtons", exact: true }).waitFor();
-  await page.getByText("Additional class for the cancel button; owned by the consuming app.", { exact: false }).first().waitFor();
+  await page.getByText("취소 버튼에 추가할 CSS 클래스. 사용하는 애플리케이션에서 정의합니다.", { exact: false }).first().waitFor();
   await verifyDialogs(page, base);
   await verifyDatePicker(page, base);
   const documentedComponents = [
@@ -209,10 +209,10 @@ try {
     const count = await toggles.count();
     assert.ok(count > 0, 'Docs must provide source examples');
     for (let i = 0; i < count; i++) await toggles.first().click();
-    await page.waitForFunction(expected => {
+    await page.waitForFunction(({ expected, componentName }) => {
       const blocks = [...document.querySelectorAll('.sbdocs-preview pre')];
-      return blocks.length === expected && blocks.every(el => el.textContent?.trim() && el.textContent.trim() !== '{}');
-    }, count);
+      return blocks.length === expected && blocks.every(el => new RegExp('<' + componentName + '[\\s/>]').test(el.textContent ?? ''));
+    }, { expected: count, componentName });
     for (const source of await page.locator('.sbdocs-preview pre').allTextContents()) {
       assert.match(source, new RegExp('<' + componentName + '[\\s/>]'), `JSX source must use ${componentName}: ${source}`);
     }

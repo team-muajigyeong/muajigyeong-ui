@@ -10,20 +10,20 @@ export type AccordionItem = {
   id: string;
   title: string;
   content: ReactNode;
-  /** Accessible panel name. */
+  /** 패널의 접근 가능한 이름. */
   panelLabel?: string;
 };
 
 export type AccordionProps = {
-  /** Panels with unique IDs. Only one panel opens at a time. */
+  /** 고유 ID를 가진 패널 목록. 한 번에 하나의 패널만 열립니다. */
   items: readonly AccordionItem[];
-  /** Semantic heading level for this instance. Defaults to 3; styling is unchanged. */
+  /** 문서 구조에 맞는 제목 단계. 기본값은 3이며 스타일에는 영향을 주지 않습니다. */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 /**
- * Shared controlled UI; application state and domain data remain with the consumer.
- * @param props Display and interaction options.
+ * 제목을 눌러 내용을 펼치는 아코디언. 한 번에 하나의 패널만 열립니다.
+ * @param props 표시 및 상호작용 설정.
  */
 export default function Accordion({ items, headingLevel = 3 }: AccordionProps) {
   const Heading = `h${headingLevel}` as `h${1 | 2 | 3 | 4 | 5 | 6}`;

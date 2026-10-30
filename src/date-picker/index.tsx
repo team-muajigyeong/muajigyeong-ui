@@ -9,23 +9,23 @@ import { FaX } from "react-icons/fa6";
 
 const cx = classNames.bind(styles);
 
-/** Inclusive selection endpoints; null represents an unselected endpoint. */
+/** 양 끝 날짜를 포함하는 선택 범위. null은 해당 날짜가 선택되지 않았음을 뜻합니다. */
 export type DateRange = [Dayjs|null,Dayjs|null];
-/** Date selection dialog. Pass modalController to provide an opening control. */
+/** 날짜 선택 대화상자. 열기 상태를 제어하려면 modalController를 전달하세요. */
 export type DatePickerProps = {
-  /** Earliest selectable day; defaults to 1900-01-01. */
+  /** 선택 가능한 가장 이른 날짜. 기본값은 1900-01-01입니다. */
   minimumDate?: Dayjs;
-  /** Latest selectable day; defaults to today. */
+  /** 선택 가능한 가장 늦은 날짜. 기본값은 오늘입니다. */
   maximumDate?: Dayjs;
-  /** Selection state returned by useDatePickerSelection; otherwise managed internally. */
+  /** useDatePickerSelection이 반환한 선택 상태. 생략하면 내부에서 관리합니다. */
   dateHandler?: ReturnType<typeof useDatePickerSelection>;
-  /** Controlled open state and setter. */
+  /** 부모에서 제어하는 열림 상태와 상태 변경 함수. */
   modalController?: [boolean, (value: boolean) => void];
-  /** Single-day or inclusive range selection. Defaults to date. */
+  /** 하루 또는 양 끝 날짜를 포함한 기간 선택. 기본값은 date입니다. */
   mode?: "range" | "date";
 }
 
-/** Manage the selected endpoints for a DatePicker instance. */
+/** DatePicker의 선택 시작일과 종료일을 관리합니다. */
 export const useDatePickerSelection = (
   [start,end]:[Dayjs|null, Dayjs|null]
 )=>{
@@ -58,7 +58,7 @@ export const useDatePickerSelection = (
   };
 }
 
-/** Select a date or date range using the existing native-dialog calendar UI. */
+/** 브라우저 기본 대화상자를 활용한 달력에서 날짜 또는 기간을 선택합니다. */
 function DatePicker({
     minimumDate = dayjs("1900-01-01"),
     maximumDate = dayjs(),
