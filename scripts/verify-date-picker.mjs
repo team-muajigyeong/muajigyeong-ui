@@ -1,0 +1,52 @@
+import assert from "node:assert/strict";
+
+/** Verify the public DatePicker stories without depending on a live application's data. */
+export async function verifyDatePicker(page, base) {
+  const story = id => page.goto(base + '?id=ui-datepicker--' + id + '&viewMode=story');
+  const open = () => page.getByRole('button', { name: '날짜 선택 열기', exact: true }).click();
+  const dialog = () => page.getByRole('dialog', { name: '날짜 선택', exact: true });
+  const day = (n, month = 10) => dialog().getByRole('button', { name: Intl.DateTimeFormat('ko', { day:'2-digit', weekday:'short', month:'2-digit' }).format(new Date(2026, month - 1, n)), exact: true });
+  const result = text => page.waitForFunction(expected => document.querySelector('output')?.textContent === expected, text);
+  await story('default');
+  await open();
+  await day(16).click();
+  await result('2026-10-16 / 2026-10-16');
+  await day(16).click();
+  await result('미선택 / 미선택');
+  await day(17).focus(); await page.keyboard.press('Enter');
+  await result('2026-10-17 / 2026-10-17');
+  await dialog().getByRole('button', { name: '날짜 선택 닫기', exact: true }).click();
+  await dialog().waitFor({ state: 'hidden' });
+  assert.equal(await page.getByRole('button', { name: '날짜 선택 열기', exact: true }).evaluate(el => el === document.activeElement), true);
+  await open(); await page.keyboard.press('Escape'); await dialog().waitFor({ state: 'hidden' });
+  await open(); await dialog().getByRole('button', { name: '다음 달', exact: true }).click();
+  await day(15, 11).click(); await result('2026-11-15 / 2026-11-15');
+  await dialog().getByRole('button', { name: '이전 달', exact: true }).click(); await day(15).waitFor();
+  await story('bounded'); await open();
+  assert.equal(await day(9).getAttribute('aria-disabled'), 'true');
+  await day(9).dispatchEvent('click'); await result('2026-10-15 / 2026-10-15');
+  await day(21).dispatchEvent('click'); await result('2026-10-15 / 2026-10-15');
+  await day(10).click(); await result('2026-10-10 / 2026-10-10');
+  await day(20).click(); await result('2026-10-20 / 2026-10-20');
+  await story('range'); await open();
+  await day(22).click(); await result('2026-10-22 / 미선택');
+  await day(20).click(); await result('2026-10-20 / 미선택');
+  await day(25).click(); await result('2026-10-20 / 2026-10-25');
+  await dialog().getByRole('button', { name: /시작 날짜:/ }).click();
+  await day(18).click(); await result('2026-10-18 / 2026-10-25');
+  await dialog().getByRole('button', { name: /종료 날짜:/ }).click();
+  await day(27).click(); await result('2026-10-18 / 2026-10-27');
+  await page.setViewportSize({ width: 390, height: 800 });
+  assert.equal(await dialog().evaluate(el => el.scrollWidth <= el.clientWidth + 1), true);
+  await page.setViewportSize({ width: 1000, height: 800 });
+  await story('empty-range'); await open();
+  await result('미선택 / 미선택');
+  const buttons = dialog().locator('[role="gridcell"] button[aria-disabled="false"]');
+  await buttons.nth(5).click(); await buttons.nth(8).click();
+  assert.doesNotMatch(await page.locator('output').innerText(), /미선택/);
+  await story('internal-selection'); await open();
+  await dialog().locator('[role="gridcell"] button[aria-disabled="false"]').first().click();
+  await dialog().getByRole('button', { name: '날짜 선택 닫기', exact: true }).click();
+  await dialog().waitFor({ state: 'hidden' });
+  console.log('PASS: DatePicker single/range/editing/bounds/month navigation/keyboard/close/reopen');
+}

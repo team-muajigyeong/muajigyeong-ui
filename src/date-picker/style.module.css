@@ -1,0 +1,228 @@
+/*|------------------------|*/
+/*|       1. dialog        |*/
+/*|------------------------|*/
+.calendarDlg {
+  user-select: none;
+  min-width: none;
+  max-width: none;
+  min-height: none;
+  max-height: none;
+  width: fit-content;
+  max-height:95%;
+  border-radius: 2em;
+  border: none;
+  display: grid;
+  box-shadow: 0 0 0.3em 0.1em rgb(0 0 0 / 0.2);
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto auto;
+  grid-template-areas: "hd hd" "cd cd";
+  background-color: light-dark(
+    var(--sand-100),
+    var(--sand-950)
+  );
+  color: light-dark(
+    var(--sand-950),
+    var(--sand-100)
+  );
+}
+.btnDlgClose {
+  width: 2rem; height: 2rem;
+  background-color: var(--coral-500);
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+  justify-self: end;
+  align-self: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  grid-area: hd;
+  svg {
+    filter:drop-shadow(0 1px color-mix(in srgb, var(--coral-900) 80%, transparent));
+  }
+}
+
+.calendarDlg:not([open]) {display: none;}
+.calendarDlgHeader {
+  grid-area: hd;
+  font-size: 1.35em;
+  align-self: start;
+  margin: 0;
+}
+
+/*|------------------------|*/
+/*|      2. calendar       |*/
+/*|------------------------|*/
+.calendar {
+  margin-top: 1.5rem;
+  display: flex;
+  position: relative;
+  grid-area: cd;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--color-text);
+  width: 320px;
+}
+
+/* calendar header */
+.calendarHeader {
+  width: 100%;
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
+}
+.calendarPagination {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto;
+  .calendarTitle {
+    display: flex;
+    grid-column: 2;
+    grid-row: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  .pageFlipper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    grid-row: 1;
+    height: 2rem;
+    border-radius:50%;
+    border: solid 0.04rem color-mix(in srgb, var(--sand-950) 30%, transparent);
+    background-color: light-dark(var(--color-body), var(--sand-800));
+    box-shadow: 0 0 0.15em 0.01em rgb(0 0 0 / 0.15);
+  }
+
+  .pageFlipper:nth-last-of-type {
+    grid-column: 3;
+  }
+  .pageFlipper:nth-first-of-type {
+    grid-column: 1;
+  }
+}
+
+.rangeSelectorWrap {
+  display: flex;
+  gap: 1em;
+}
+.rangeSelector {
+  border: solid 0.1em transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  justify-content: center;
+  display: flex;
+  padding: 1em; margin-top: 1em;
+  align-items: baseline;
+  background-color: var(--sand-800);
+  border-radius: .8em;
+  gap: 0.5em;
+  min-height: 5rem;
+  position: relative;
+  flex: 1;
+  flex-flow: wrap;
+  align-items: center;
+
+  .dateValue {
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    min-height: 0;
+    max-height: fit-content;
+    margin-left: auto;
+  }
+  .dateValue:empty {
+    display: none;
+  }
+}
+.rangeSelector:focus-within {
+  outline: auto;
+  outline-offset: 0.1em;
+}
+.rangeSelector[aria-pressed="true"] {
+  border: solid 0.1em var(--coral-500);
+}
+.rangeSelector[aria-pressed="true"] {
+  background-color: color-mix(in srgb, var(--coral-500) 12%, var(--sand-800));
+}
+.selectionHint {
+  margin: 0;
+  width: 100%;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  min-height: 3em;
+  word-break: keep-all;
+  margin-block: 1em;
+}
+
+/* calendar body */
+.dateGrid {
+  display: grid;
+  overflow: hidden;
+  border-radius: 1.5em;
+  grid-template-columns: repeat(7,1fr);
+  grid-auto-rows: auto;
+  overflow: hidden;
+  width: 95%;
+  height: 100%;
+  padding-inline: 2.5%;
+  padding-block: 1.5%;
+  box-sizing: content-box;
+  background-color: light-dark(var(--color-body), var(--sand-800));
+}
+.row {
+  display: contents;
+}
+.row.headers .dateCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dateCell {
+  min-width: 0;
+}
+.dateCell button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  aspect-ratio: 1/1;
+  border-radius: 0;
+  border: none;
+  background-color: light-dark(var(--color-body), var(--sand-800));
+}
+.dateCell .outDate {
+  opacity: 0.5;
+}
+.date {
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inRange button {
+  background-color: var(--coral-500);
+}
+.inRange.roundTopLeft button { border-top-left-radius: 1.2rem; }
+.inRange.roundTopRight button { border-top-right-radius: 1.2rem; }
+.inRange.roundBottomLeft button { border-bottom-left-radius: 1.2rem; }
+.inRange.roundBottomRight button { border-bottom-right-radius: 1.2rem; }
+.inRange .startDate .date {
+  background-color: color-mix(in srgb, var(--coral-100) 60%, transparent);
+  color: var(--sand-950);
+}
+.inRange .endDate .date {
+  background-color: var(--sand-100);
+  color: var(--sand-950);
+}
+.selected {
+  background-color:color-mix(in srgb, var(--coral-500) 50%, transparent);
+}

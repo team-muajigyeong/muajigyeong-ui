@@ -145,3 +145,8 @@ Storybook에서 제어 상태, 제목 포커스, 중첩 모달, 긴 내용과 �
 
 앱의 공통 색상 변수 52개를 theme.css로 제공합니다. [사용법과 동기화](docs/colors.md)를 참고하세요.
 Storybook의 Design Tokens / Colors에서 밝은 모드·어두운 모드 견본과 변수명을 확인할 수 있습니다.
+
+## DatePicker (0.5.0)
+
+Calendar를 DatePicker로 정리했습니다. [사용법과 변경 사항](docs/date-picker.md)을 참고하세요.
+Storybook UI / DatePicker에서 단일 날짜·기간·선택 제한·미선택·내부 상태 예제를 확인할 수 있습니다.

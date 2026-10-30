@@ -1,3 +1,4 @@
+import { verifyDatePicker } from "./verify-date-picker.mjs";
 import { verifyColors } from "./verify-colors.mjs";
 import { verifyDialogs } from "./verify-dialogs.mjs";
 import assert from "node:assert/strict";
@@ -191,7 +192,9 @@ try {
   await page.getByRole("heading", { name: "FormActionButtons", exact: true }).waitFor();
   await page.getByText("Additional class for the cancel button; owned by the consuming app.", { exact: false }).first().waitFor();
   await verifyDialogs(page, base);
+  await verifyDatePicker(page, base);
   const documentedComponents = [
+    ["datepicker", "DatePicker"],
     ["alertdialog", "AlertDialog"], ["popupchoice", "PopupChoice"],
     ['accordion', 'Accordion'], ['checkchip', 'CheckChip'],
     ['choiceselect', 'ChoiceSelect'], ['controlledinput', 'ControlledInput'],
@@ -215,7 +218,7 @@ try {
   }
   await verifyColors(page, base);
   assert.deepEqual(errors, []);
-  console.log("PASS: eleven components, modal focus/Escape/nesting, choice confirmation/cancellation, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
+  console.log("PASS: twelve components including DatePicker, modal focus/Escape/nesting, choice confirmation/cancellation, text/password inputs, switch state and keyboard, busy/disabled actions, style slots, heading levels, repeated toast, announcements, keyboard, Autodocs and PascalCase JSX source for every example");
 } finally {
   await browser?.close();
   await new Promise(resolve => server.close(resolve));
