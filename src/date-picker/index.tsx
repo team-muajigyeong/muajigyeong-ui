@@ -223,7 +223,7 @@ function DatePicker({
             })}
           </div>)}
         </div>
-        <p id={helpId} className={styles.keyboardHelp}>방향키로 날짜를 이동하고 Enter 또는 Space로 선택하세요. Home·End는 주의 처음·끝, Page Up·Down은 월, Shift와 함께 누르면 연도를 이동합니다. Escape로 닫습니다.</p>
+        <p id={helpId} className={styles.keyboardHelp}>방향키로 날짜를 이동하고 Enter 또는 Space로 선택하세요. Home·End는 주의 처음·끝, Page Up·Down은 월, Shift와 함께 누르면 연도를 이동합니다. Escape(ESC)로 닫습니다.</p>
       </div>
       <button type="button" className={styles.btnDlgClose} aria-label={`${title} 닫기`} onClick={() => setOpen(false)}><FaX aria-hidden="true" /></button>
     </dialog>
