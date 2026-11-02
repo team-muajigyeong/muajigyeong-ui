@@ -5,10 +5,34 @@ export async function verifyDatePicker(page, base) {
   const story = id => page.goto(base + '?id=ui-datepicker--' + id + '&viewMode=story');
   const open = () => page.getByRole('button', { name: '날짜 선택 열기', exact: true }).click();
   const dialog = () => page.getByRole('dialog', { name: '날짜 선택', exact: true });
-  const day = (n, month = 10) => dialog().getByRole('button', { name: Intl.DateTimeFormat('ko', { day:'2-digit', weekday:'short', month:'2-digit' }).format(new Date(2026, month - 1, n)), exact: true });
+  const day = (n, month = 10) => dialog().getByRole('button', { name: Intl.DateTimeFormat('ko', { year:'numeric', day:'2-digit', weekday:'short', month:'2-digit' }).format(new Date(2026, month - 1, n)), exact: true });
   const result = text => page.waitForFunction(expected => document.querySelector('output')?.textContent === expected, text);
   await story('default');
   await open();
+  assert.equal(await day(15).evaluate(el => el === document.activeElement), true, 'open focuses selected date');
+  assert.equal(await dialog().locator('[role="gridcell"] button[tabindex="0"]').count(), 1);
+  await day(15).press('ArrowRight'); assert.equal(await day(16).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('ArrowDown'); assert.equal(await day(23).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('ArrowLeft'); assert.equal(await day(22).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('ArrowUp'); assert.equal(await day(15).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('Home'); assert.equal(await day(11).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('End'); assert.equal(await day(17).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('PageDown'); assert.equal(await day(17, 11).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('PageUp'); assert.equal(await day(17).evaluate(el => el === document.activeElement), true);
+  await page.keyboard.press('Shift+PageUp');
+  assert.equal(await page.evaluate(() => document.activeElement.dataset.date), '2025-10-17');
+  await page.keyboard.press('Shift+PageDown'); assert.equal(await day(17).evaluate(el => el === document.activeElement), true);
+  await day(31).focus(); await page.keyboard.press('ArrowRight');
+  assert.equal(await day(1, 11).evaluate(el => el === document.activeElement), true, 'crossing months keeps focus');
+  await page.keyboard.press('ArrowLeft'); await page.keyboard.press('PageDown');
+  assert.equal(await day(30, 11).evaluate(el => el === document.activeElement), true, 'month navigation clamps day number');
+  await page.keyboard.press('PageUp');
+  await page.keyboard.press('Tab');
+  assert.equal(await dialog().getByRole('button', { name:'날짜 선택 닫기', exact:true }).evaluate(el => el === document.activeElement), true, 'Tab exits the date grid in one step');
+  await page.keyboard.press('Tab');
+  assert.equal(await dialog().getByRole('button', { name:'이전 달', exact:true }).evaluate(el => el === document.activeElement), true, 'Tab stays inside dialog');
+  await page.keyboard.press('Shift+Tab');
+  assert.equal(await dialog().getByRole('button', { name:'날짜 선택 닫기', exact:true }).evaluate(el => el === document.activeElement), true);
   await day(16).click();
   await result('2026-10-16 / 2026-10-16');
   await day(16).click();
@@ -26,6 +50,7 @@ export async function verifyDatePicker(page, base) {
   assert.equal(await day(9).getAttribute('aria-disabled'), 'true');
   await day(9).dispatchEvent('click'); await result('2026-10-15 / 2026-10-15');
   await day(21).dispatchEvent('click'); await result('2026-10-15 / 2026-10-15');
+  await day(9).focus(); await page.keyboard.press('Enter'); await page.keyboard.press('Space'); await result('2026-10-15 / 2026-10-15');
   await day(10).click(); await result('2026-10-10 / 2026-10-10');
   await day(20).click(); await result('2026-10-20 / 2026-10-20');
   await story('range'); await open();
@@ -36,8 +61,18 @@ export async function verifyDatePicker(page, base) {
   await day(18).click(); await result('2026-10-18 / 2026-10-25');
   await dialog().getByRole('button', { name: /종료 날짜:/ }).click();
   await day(27).click(); await result('2026-10-18 / 2026-10-27');
-  await page.setViewportSize({ width: 390, height: 800 });
-  assert.equal(await dialog().evaluate(el => el.scrollWidth <= el.clientWidth + 1), true);
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const font of ['100%', '200%']) {
+      await page.evaluate(value => document.documentElement.style.fontSize = value, font);
+      assert.equal(await dialog().evaluate(el => {
+        const box = el.getBoundingClientRect();
+        return box.left >= 0 && box.right <= innerWidth + 1 && el.scrollWidth <= el.clientWidth + 1;
+      }), true, `calendar fits viewport at ${width}px / ${font}`);
+      assert.equal(await day(27).evaluate(el => el.scrollWidth <= el.clientWidth + 1), true, 'large date text is not clipped');
+    }
+  }
+  await page.evaluate(() => document.documentElement.style.fontSize = '');
   await page.setViewportSize({ width: 1000, height: 800 });
   await story('empty-range'); await open();
   await result('미선택 / 미선택');
@@ -48,5 +83,28 @@ export async function verifyDatePicker(page, base) {
   await dialog().locator('[role="gridcell"] button[aria-disabled="false"]').first().click();
   await dialog().getByRole('button', { name: '날짜 선택 닫기', exact: true }).click();
   await dialog().waitFor({ state: 'hidden' });
-  console.log('PASS: DatePicker single/range/editing/bounds/month navigation/keyboard/close/reopen');
+  await story('form-context');
+  await page.getByRole('button', { name:'날짜 입력 폼 열기', exact:true }).click();
+  await open();
+  const inner = page.getByRole('dialog', { name:'확인일 선택', exact:true });
+  const outer = page.getByRole('dialog', { name:'확인 기록 입력', exact:true });
+  await inner.getByRole('heading', { name:'확인일 선택', level:3 }).waitFor();
+  await inner.locator('[data-date="2026-10-16"]').click();
+  await inner.getByRole('button', { name:'다음 달', exact:true }).click();
+  await inner.locator('[data-date="2026-11-17"]').press('Enter');
+  await inner.locator('[data-date="2026-11-18"]').press('Space');
+  assert.equal(await page.getByLabel('폼 제출 횟수', { exact:true }).textContent(), '0', 'calendar never submits the form');
+  await page.keyboard.press('Escape'); await inner.waitFor({ state:'hidden' });
+  assert.equal(await outer.isVisible(), true, 'Escape only closes the inner dialog');
+  assert.equal(await page.getByRole('button', { name:'날짜 선택 열기', exact:true }).evaluate(el => el === document.activeElement), true);
+  await page.getByRole('button', { name:'다른 확인일 불러오기', exact:true }).click();
+  await open();
+  await page.waitForFunction(() => document.activeElement?.getAttribute('data-date') === '2026-11-20');
+  assert.equal(await inner.locator('[data-date="2026-11-20"]').evaluate(el => el === document.activeElement), true, 'external changes are reflected on reopening');
+  await inner.getByRole('button', { name:'확인일 선택 닫기', exact:true }).click();
+  await page.getByRole('button', { name:'기록 저장', exact:true }).click();
+  assert.equal(await page.getByLabel('폼 제출 횟수', { exact:true }).textContent(), '1');
+  await page.keyboard.press('Escape'); await outer.waitFor({ state:'hidden' });
+  assert.equal(await page.getByRole('button', { name:'날짜 입력 폼 열기', exact:true }).evaluate(el => el === document.activeElement), true);
+  console.log('PASS: DatePicker selection/range/bounds/arrows/Home/End/month/year/one Tab stop/form safety/nested focus/320px large text');
 }

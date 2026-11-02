@@ -1,0 +1,31 @@
+.date-picker-example {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+}
+.date-picker-example > button,
+.date-picker-example > output {
+  max-width: 100%;
+}
+.date-picker-example > output {
+  min-width: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.date-picker-example-form {
+  display: grid;
+  gap: .75rem;
+  min-width: 0;
+}
+.date-picker-example-form > label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+.date-picker-example-form input {
+  min-width: 0;
+  max-width: 100%;
+}
