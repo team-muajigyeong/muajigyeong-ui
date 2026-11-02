@@ -27,6 +27,8 @@ export type DatePickerProps = {
   modalController?: [boolean, (value: boolean) => void];
   /** 하루 또는 양 끝 날짜를 포함한 기간 선택. 기본값은 date입니다. */
   mode?: "range" | "date";
+  /** 기간 달력을 열 때 수정할 날짜. 시작일이 없으면 먼저 시작일을 선택합니다. 생략하면 자동으로 정합니다. */
+  initialRangeBoundary?: "start" | "end";
   /** 대화상자 제목. 기본값은 날짜 선택입니다. */
   title?: string;
   /** 사용하는 화면의 제목 구조에 맞춘 단계. 기본값은 2입니다. */
@@ -50,7 +52,7 @@ export const useDatePickerSelection = ([start, end]: DateRange) => {
 /** 브라우저 기본 대화상자에서 날짜를 선택합니다. 선택은 즉시 반영되며 닫기는 선택을 취소하지 않습니다. */
 function DatePicker({
   minimumDate = dayjs("1900-01-01"), maximumDate = dayjs(), mode = "date",
-  modalController, dateHandler, title = "날짜 선택", headingLevel = 2, returnFocusRef,
+  modalController, dateHandler, title = "날짜 선택", headingLevel = 2, returnFocusRef, initialRangeBoundary,
 }: DatePickerProps) {
   const internalSelection = useDatePickerSelection([dayjs(), dayjs()]);
   const { startDate, endDate, setSelection } = dateHandler ?? internalSelection;
@@ -80,17 +82,19 @@ function DatePicker({
     if (opened && !dialog.open) {
       previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       // Reopen on the current selection, including a value changed by the consuming form.
-      let initial = dayjs(startKey || endKey || undefined).startOf("day");
+      const boundary = mode === "range" ? initialRangeBoundary : undefined;
+      const initialKey = boundary === "end" ? endKey || startKey : startKey || endKey;
+      let initial = dayjs(initialKey || undefined).startOf("day");
       if (!initial.isValid()) initial = dayjs().startOf("day");
       if (initial.isBefore(dayjs(minKey), "day")) initial = dayjs(minKey);
       if (initial.isAfter(dayjs(maxKey), "day")) initial = dayjs(maxKey);
       pendingFocus.current = initial.format("YYYY-MM-DD");
       setActiveDate(initial);
-      setSelectionType(startKey && endKey ? null : startKey ? "endDate" : "startDate");
+      setSelectionType(boundary === "start" ? "startDate" : boundary === "end" ? (startKey ? "endDate" : "startDate") : startKey && endKey ? null : startKey ? "endDate" : "startDate");
       dialog.showModal();
     }
     if (!opened && dialog.open) dialog.close();
-  }, [opened, startKey, endKey, minKey, maxKey]);
+  }, [opened, startKey, endKey, minKey, maxKey, mode, initialRangeBoundary]);
 
   // Reuse the same Tab containment as the other public dialogs. Native close releases inert first.
   useFocusTrap({ containerRef: dlgRef, initialFocusRef: activeButtonRef, active: opened, restoreFocus: false });

@@ -67,3 +67,7 @@ export const FormContext: Story = { name: "폼 안에서 날짜 선택", render:
     </form>
   </AlertDialog>;
 } };
+
+/** 시작일·종료일 입력란에 각각 달력 버튼을 연결할 때 쓰는 옵션입니다. */
+export const StartDate: Story = { name: "시작일 바로 수정", args: { mode: "range", initialRangeBoundary: "start" } };
+export const EndDate: Story = { name: "종료일 바로 수정", args: { mode: "range", initialRangeBoundary: "end" } };

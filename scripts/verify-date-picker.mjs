@@ -61,6 +61,14 @@ export async function verifyDatePicker(page, base) {
   await day(18).click(); await result('2026-10-18 / 2026-10-25');
   await dialog().getByRole('button', { name: /종료 날짜:/ }).click();
   await day(27).click(); await result('2026-10-18 / 2026-10-27');
+  await story('end-date'); await open();
+  assert.equal(await day(19).evaluate(el => el === document.activeElement), true, 'end-date opener focuses current end');
+  assert.equal(await dialog().getByRole('button', { name: /종료 날짜:/ }).getAttribute('aria-pressed'), 'true');
+  await day(21).click(); await result('2026-10-15 / 2026-10-21');
+  await story('start-date'); await open();
+  assert.equal(await day(15).evaluate(el => el === document.activeElement), true, 'start-date opener focuses current start');
+  await day(13).click(); await result('2026-10-13 / 2026-10-19');
+  await day(27).click(); await day(27).click();
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 800 });
     for (const font of ['100%', '200%']) {
