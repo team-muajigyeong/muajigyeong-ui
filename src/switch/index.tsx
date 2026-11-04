@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import classNames from "classnames/bind";
 import type { Dispatch, InputHTMLAttributes, ReactElement, SetStateAction } from "react";
 import type { IconType } from "react-icons";
 
@@ -8,7 +9,7 @@ import useMount from "../internal/use-mount.js";
 
 import styles from "./style.module.css";
 
-const cx = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
+const cx = classNames.bind(styles);
 
 type DeniedAttrib = "type" | "role" | "aria-checked" | "aria-disabled" | "aria-label" | "aria-labelledby";
 
@@ -58,7 +59,7 @@ export default function Switch({
   };
 
   return (
-    <label htmlFor={uid} className={cx(styles.switchLabel, labelClassName)}>
+    <label htmlFor={uid} className={cx("switchLabel", labelClassName)}>
       <b>
         <span>{label}</span>
       </b>

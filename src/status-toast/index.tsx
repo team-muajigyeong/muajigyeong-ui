@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import classNames from "classnames/bind";
 
 import styles from "./style.module.css";
+
+const cx = classNames.bind(styles);
 
 export type StatusToastProps = {
   /** 화면에 표시할 메시지. 빈 문자열이면 토스트를 숨깁니다. */
@@ -34,7 +37,7 @@ export default function StatusToast({ message, announcement, duration = 5000, to
 
   return (
     <div
-      className={[styles.toast, className].filter(Boolean).join(" ")}
+      className={cx("toast", className)}
       data-visible={message && visible ? "true" : "false"}
       data-tone={tone}
       role={tone === "error" ? "alert" : "status"}

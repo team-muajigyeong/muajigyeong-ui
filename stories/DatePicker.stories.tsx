@@ -8,9 +8,56 @@ import "./date-picker.css";
 const meta = {
   title: "UI/DatePicker",
   component: DatePicker,
+  argTypes: {
+    initialRangeBoundary: {
+      description: "기간 달력을 열 때 수정할 날짜입니다. 생략하면 자동으로 정합니다.",
+      control: "radio", options: ["start", "end"],
+      table: { type: { summary: '"start" | "end" | undefined' } },
+    },
+    title: {
+      description: "대화상자 제목입니다. 기본값은 날짜 선택입니다.",
+      control: "text",
+      table: { type: { summary: "string | undefined" } },
+    },
+    headingLevel: {
+      description: "화면의 제목 구조에 맞춘 단계입니다. 기본값은 2입니다.",
+      control: "select", options: [1, 2, 3, 4, 5, 6],
+      table: { type: { summary: "1 | 2 | 3 | 4 | 5 | 6 | undefined" } },
+    },
+    returnFocusRef: {
+      description: "닫은 뒤 초점을 돌려줄 요소입니다.",
+      control: false,
+      table: { type: { summary: "RefObject<HTMLElement | null> | undefined" } },
+    },
+    "minimumDate": {
+      description: "선택 가능한 가장 이른 날짜. 기본값은 1900-01-01입니다.",
+      control: false,
+      table: { type: { summary: "dayjs.Dayjs | undefined" } },
+    },
+    "maximumDate": {
+      description: "선택 가능한 가장 늦은 날짜. 기본값은 오늘입니다.",
+      control: false,
+      table: { type: { summary: "dayjs.Dayjs | undefined" } },
+    },
+    "dateHandler": {
+      description: "useDatePickerSelection이 반환한 선택 상태. 생략하면 내부에서 관리합니다.",
+      control: false,
+      table: { type: { summary: "ReturnType<typeof useDatePickerSelection> | undefined" } },
+    },
+    "modalController": {
+      description: "부모에서 제어하는 열림 상태와 상태 변경 함수.",
+      control: false,
+      table: { type: { summary: "[boolean, (value: boolean) => void] | undefined" } },
+    },
+    "mode": {
+      description: "하루 또는 양 끝 날짜를 포함한 기간 선택. 기본값은 date입니다.",
+      control: "radio",
+      options: ["date","range"],
+      table: { type: { summary: "\"range\" | \"date\" | undefined" } },
+    },
+  },
   parameters: { docs: { source: { type: "dynamic" } } },
   args: { mode: "date", minimumDate: dayjs("2026-10-01"), maximumDate: dayjs("2026-11-30") },
-  argTypes: { minimumDate: { control: false }, maximumDate: { control: false }, dateHandler: { control: false }, modalController: { control: false }, mode: { control: "radio", options: ["date", "range"] } },
   render: function Example(args) {
     const handler = useDatePickerSelection([dayjs("2026-10-15"), dayjs("2026-10-19")]);
     const controller = useState(false);

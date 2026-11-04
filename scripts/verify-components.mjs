@@ -1,3 +1,4 @@
+import { verifyCheckbox } from "./verify-checkbox.mjs";
 import { verifyDocsTheme } from "./verify-docs-theme.mjs";
 import { verifyDatePicker } from "./verify-date-picker.mjs";
 import { verifyColors } from "./verify-colors.mjs";
@@ -217,6 +218,7 @@ try {
       assert.match(source, new RegExp('<' + componentName + '[\\s/>]'), `JSX source must use ${componentName}: ${source}`);
     }
   }
+  await verifyCheckbox(page, base);
   await verifyColors(page, base);
   await verifyDocsTheme(page, base);
   assert.deepEqual(errors, []);

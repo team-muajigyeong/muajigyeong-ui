@@ -1,7 +1,10 @@
 "use client";
 
 import { useId } from "react";
+import classNames from "classnames/bind";
 import styles from "./style.module.css";
+
+const cx = classNames.bind(styles);
 
 export type CheckChipProps = {
   /** 화면과 보조 기술에 제공하는 필드 이름. */
@@ -21,7 +24,7 @@ export type CheckChipProps = {
 export default function CheckChip({ label, description, checked, onChange }: CheckChipProps) {
   const id = useId();
   return (
-    <label className={[styles.chip, checked ? styles.isChecked : ""].filter(Boolean).join(" ")}>
+    <label className={cx("chip", { isChecked: checked })}>
       <input
         type="checkbox"
         checked={checked}

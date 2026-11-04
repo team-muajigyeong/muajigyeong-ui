@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import classNames from "classnames/bind";
 import { FaChevronDown } from "react-icons/fa";
 import styles from "./style.module.css";
+
+const cx = classNames.bind(styles);
 
 export type ChoiceSelectOption = {
   /** 부모에서 전달하는 제어 값. */
@@ -27,8 +30,6 @@ export type ChoiceSelectProps = {
   /** 사용자 입력을 비활성화합니다. */
   disabled?: boolean;
 };
-
-const cx = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
 
 /**
  * 부모에서 상태를 제어하는 공통 UI. 애플리케이션 상태와 도메인 데이터는 사용하는 쪽에서 관리합니다.
@@ -117,7 +118,7 @@ export default function ChoiceSelect({
       <button
         ref={buttonRef}
         type="button"
-        className={cx(styles.trigger, disabled && styles.isDisabled)}
+        className={cx("trigger", { isDisabled: disabled })}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={`choice-list-${id}`}
@@ -162,7 +163,7 @@ export default function ChoiceSelect({
               type="button"
               role="option"
               aria-selected={option.value === value}
-              className={cx(styles.option, option.value === value && styles.isSelected)}
+              className={cx("option", { isSelected: option.value === value })}
               onClick={() => {
                 selectOption(option.value);
               }}

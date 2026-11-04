@@ -1,6 +1,9 @@
 "use client";
 
+import classNames from "classnames/bind";
 import styles from "./style.module.css";
+
+const cx = classNames.bind(styles);
 
 export type FormActionButtonsProps = {
   cancelLabel?: string;
@@ -34,10 +37,10 @@ export default function FormActionButtons({
   confirmButtonClassName,
 }: FormActionButtonsProps) {
   return (
-    <div className={[styles.wrapper, density === "compact" ? styles.compact : "", className].filter(Boolean).join(" ")}>
+    <div className={cx("wrapper", { compact: density === "compact" }, className)}>
       <button
         type="button"
-        className={[styles.cancelButton, cancelButtonClassName].filter(Boolean).join(" ")}
+        className={cx("cancelButton", cancelButtonClassName)}
         onClick={onCancel}
         disabled={cancelDisabled}
       >
@@ -45,7 +48,7 @@ export default function FormActionButtons({
       </button>
       <button
         type="button"
-        className={[styles.confirmButton, confirmButtonClassName].filter(Boolean).join(" ")}
+        className={cx("confirmButton", confirmButtonClassName)}
         onClick={() => { if (!confirmBusy) onConfirm(); }}
         disabled={confirmDisabled}
         aria-disabled={confirmDisabled || confirmBusy}

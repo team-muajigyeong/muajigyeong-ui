@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import classNames from "classnames/bind";
 import type { ComponentPropsWithRef, Dispatch, ReactNode, SetStateAction } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -8,7 +9,7 @@ import useMount from "../internal/use-mount.js";
 
 import styles from "./style.module.css";
 
-const cx = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
+const cx = classNames.bind(styles);
 
 export type AOSTextFieldProps = ComponentPropsWithRef<"input"> & {
   type?: "text" | "password" | "email" | "url" | "search" | "tel" | "date";
@@ -46,7 +47,7 @@ export function AOSTextField({
   const uid = didMount ? (idProps ?? automatedId) : idProps;
 
   return (
-    <label className={cx(styles["txtfield-wrapper"], styles.aos, density === "compact" && styles.compact, labelPlacement === "stacked" && styles.stacked, currentValue?.length ? styles.fill : "", className)} htmlFor={uid}>
+    <label className={cx("txtfield-wrapper", "aos", { compact: density === "compact", stacked: labelPlacement === "stacked", fill: !!currentValue?.length }, className)} htmlFor={uid}>
       <span className={styles["label-text"]}>
         {icon}
         <span>{label}</span>

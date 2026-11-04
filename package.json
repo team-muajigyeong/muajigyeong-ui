@@ -1,6 +1,6 @@
 {
   "name": "@muajigyeong/ui",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Muajigyeong shared React UI components",
   "type": "module",
   "files": [
@@ -64,6 +64,10 @@
     "./date-picker": {
       "types": "./dist/date-picker/index.d.ts",
       "import": "./dist/date-picker/index.js"
+    },
+    "./checkbox": {
+      "types": "./dist/checkboxes/index.d.ts",
+      "import": "./dist/checkboxes/index.js"
     }
   },
   "scripts": {

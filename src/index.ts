@@ -26,3 +26,5 @@ export type { PopUpChoiceProps } from "./popup-choice/index.js";
 
 export { default as DatePicker, useDatePickerSelection } from "./date-picker/index.js";
 export type { DatePickerProps, DateRange } from "./date-picker/index.js";
+
+export { default as Checkbox } from "./checkboxes/index.js";
