@@ -59,6 +59,10 @@
     }
   }
 
+.content > :where(p, ul, ol, dl) + :where(button, [data-dialog-actions]) {
+  margin-block-start: 0.75rem;
+}
+
 @media (forced-colors: active) {
   .alert-dialog::backdrop {
     background-color: Canvas;

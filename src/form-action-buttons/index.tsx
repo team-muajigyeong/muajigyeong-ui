@@ -37,7 +37,7 @@ export default function FormActionButtons({
   confirmButtonClassName,
 }: FormActionButtonsProps) {
   return (
-    <div className={cx("wrapper", { compact: density === "compact" }, className)}>
+    <div data-dialog-actions="" className={cx("wrapper", { compact: density === "compact" }, className)}>
       <button
         type="button"
         className={cx("cancelButton", cancelButtonClassName)}
